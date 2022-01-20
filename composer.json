@@ -17,7 +17,9 @@
         "symfony/process": "~2.1"
     },
     "autoload": {
-        "psr-0": { "Igorw": "src" }
+        "psr-4": {
+            "Igorw\\FcgiHttpKernel\\": "src"
+        }
     },
     "extra": {
         "branch-alias": {
