@@ -9,13 +9,13 @@
         }
     ],
     "require": {
-        "symfony/http-kernel": "~2.1",
-        "adoy/fastcgi-client": "dev-master"
+        "adoy/fastcgi-client": "dev-master",
+        "symfony/http-kernel": "^5.4"
     },
     "require-dev": {
         "ext-json": "*",
         "phpunit/phpunit": "^5",
-        "silex/silex": "~1.0",
+        "symfony/framework-bundle": "^5.4",
         "symfony/process": "^5.4"
     },
     "autoload": {
