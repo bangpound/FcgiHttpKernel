@@ -18,10 +18,11 @@ class FcgiHttpKernelTest extends \PHPUnit_Framework_TestCase
 
         static::$server = new Process([
             $phpCgiBin,
+            '--nodaemonize',
+            '--fpm-config',
+            __DIR__.'/../php-fpm.conf',
             '-d',
             'expose_php=Off',
-            '-b',
-            "$host:$port",
         ]);
         static::$server->start();
 
