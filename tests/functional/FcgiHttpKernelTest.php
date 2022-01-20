@@ -208,7 +208,7 @@ class FcgiHttpKernelTest extends \PHPUnit_Framework_TestCase
 
         $cookies = $response->headers->getCookies();
         $this->assertSame('foo', $cookies[0]->getName());
-        $this->assertSame('', $cookies[0]->getValue());
+        $this->assertLessThan(time(), $cookies[0]->getExpiresTime());
     }
 
     /** @test */
