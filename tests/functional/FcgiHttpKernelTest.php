@@ -41,12 +41,18 @@ class FcgiHttpKernelTest extends \PHPUnit_Framework_TestCase
     private $client;
     private $kernel;
 
-    public function __construct($name = NULL, array $data = array(), $dataName = '')
+    public function setUp()
     {
         $this->client = new Client(getenv('FCGI_HTTP_KERNEL_HOST'), getenv('FCGI_HTTP_KERNEL_PORT'));
         $this->kernel = new FcgiHttpKernel($this->client, __DIR__.'/Fixtures');
+        parent::setUp();
+    }
 
-        parent::__construct($name, $data, $dataName);
+    public function tearDown()
+    {
+        $this->client = null;
+        $this->kernel = null;
+        parent::tearDown();
     }
 
     /** @test */
