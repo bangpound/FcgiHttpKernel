@@ -261,13 +261,11 @@ class FcgiHttpKernelTest extends \PHPUnit_Framework_TestCase
                 __DIR__.'/Fixtures/pixel.gif',
                 'pixel.gif',
                 'image/gif',
-                false,
             ),
             array(
                 __DIR__.'/Fixtures/sadkitten.gif',
                 'sadkitten.gif',
                 'image/gif',
-                'not getting response from FCGI server',
             ),
         );
     }
@@ -276,12 +274,8 @@ class FcgiHttpKernelTest extends \PHPUnit_Framework_TestCase
      * @dataProvider filesProvider
      * @test
      */
-    public function uploadShouldPutFileInFiles($path, $name, $type, $skipped)
+    public function uploadShouldPutFileInFiles($path, $name, $type)
     {
-        if ($skipped) {
-            $this->markTestSkipped($skipped);
-        }
-
         $file = new UploadedFile($path, $name, $type);
 
         $request = Request::create('/upload.php', 'POST');
