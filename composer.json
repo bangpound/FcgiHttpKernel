@@ -16,7 +16,7 @@
         "ext-json": "*",
         "phpunit/phpunit": "^5",
         "silex/silex": "~1.0",
-        "symfony/process": "~2.1"
+        "symfony/process": "^5.4"
     },
     "autoload": {
         "psr-4": {

@@ -4,7 +4,7 @@ use Adoy\FastCGI\Client;
 use Igorw\FcgiHttpKernel\FcgiHttpKernel;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Process\ProcessBuilder;
+use Symfony\Component\Process\Process;
 
 class FcgiHttpKernelTest extends \PHPUnit_Framework_TestCase
 {
@@ -16,14 +16,13 @@ class FcgiHttpKernelTest extends \PHPUnit_Framework_TestCase
         $host = getenv('FCGI_HTTP_KERNEL_HOST');
         $port = getenv('FCGI_HTTP_KERNEL_PORT');
 
-        $builder = ProcessBuilder::create()
-            ->add('exec')
-            ->add($phpCgiBin)
-            ->add('-d expose_php=Off')
-            ->add('-b')
-            ->add("$host:$port");
-
-        static::$server = $builder->getProcess();
+        static::$server = new Process([
+            $phpCgiBin,
+            '-d',
+            'expose_php=Off',
+            '-b',
+            "$host:$port",
+        ]);
         static::$server->start();
 
         usleep(500000);
