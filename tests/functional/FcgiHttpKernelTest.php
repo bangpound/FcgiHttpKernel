@@ -2,15 +2,16 @@
 
 use Adoy\FastCGI\Client;
 use Igorw\FcgiHttpKernel\FcgiHttpKernel;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Process\Process;
 
-class FcgiHttpKernelTest extends \PHPUnit_Framework_TestCase
+class FcgiHttpKernelTest extends TestCase
 {
     static public $server;
 
-    static public function setupBeforeClass()
+    static public function setupBeforeClass(): void
     {
         $phpCgiBin = getenv('FCGI_HTTP_KERNEL_BIN');
         $host = getenv('FCGI_HTTP_KERNEL_HOST');
@@ -33,7 +34,7 @@ class FcgiHttpKernelTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    static public function tearDownAfterClass()
+    static public function tearDownAfterClass(): void
     {
         static::$server->stop();
     }
@@ -41,14 +42,14 @@ class FcgiHttpKernelTest extends \PHPUnit_Framework_TestCase
     private $client;
     private $kernel;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->client = new Client(getenv('FCGI_HTTP_KERNEL_HOST'), getenv('FCGI_HTTP_KERNEL_PORT'));
         $this->kernel = new FcgiHttpKernel($this->client, __DIR__.'/Fixtures');
         parent::setUp();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->client = null;
         $this->kernel = null;
