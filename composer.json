@@ -9,6 +9,7 @@
         }
     ],
     "require": {
+        "php": "^7.2",
         "adoy/fastcgi-client": "dev-master",
         "symfony/http-kernel": "^4.4 || ^5.4"
     },

@@ -24,7 +24,7 @@ class FcgiHttpKernel implements HttpKernelInterface
         $this->frontController = $frontController;
     }
 
-    public function handle(Request $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true)
+    public function handle(Request $request, int $type = HttpKernelInterface::MAIN_REQUEST, bool $catch = true)
     {
         $filename = $this->frontController ?: ltrim($request->getPathInfo(), '/');
 
@@ -77,12 +77,12 @@ class FcgiHttpKernel implements HttpKernelInterface
         return $response;
     }
 
-    private function getRequestBody(Request $request)
+    private function getRequestBody(Request $request): string
     {
         return $request->getContent() ?: $this->getUrlEncodedParameterBag($request->request);
     }
 
-    private function getStatusCode(array $headers)
+    private function getStatusCode(array $headers): int
     {
         if (isset($headers['Status'])) {
             list($code) = explode(' ', $headers['Status']);
@@ -92,7 +92,7 @@ class FcgiHttpKernel implements HttpKernelInterface
         return 200;
     }
 
-    private function getHeaderMap($headerListRaw)
+    private function getHeaderMap($headerListRaw): array
     {
         if (0 === strlen($headerListRaw)) {
             return array();
@@ -118,7 +118,7 @@ class FcgiHttpKernel implements HttpKernelInterface
         return $headerMap;
     }
 
-    private function flattenHeaderMap(array $headerMap)
+    private function flattenHeaderMap(array $headerMap): array
     {
         $flatHeaderMap = array();
         foreach ($headerMap as $name => $values) {
@@ -127,7 +127,7 @@ class FcgiHttpKernel implements HttpKernelInterface
         return $flatHeaderMap;
     }
 
-    private function getCookies(array $headerMap)
+    private function getCookies(array $headerMap): array
     {
         if (!isset($headerMap['Set-Cookie'])) {
             return array();
@@ -139,14 +139,14 @@ class FcgiHttpKernel implements HttpKernelInterface
         );
     }
 
-    private function cookieFromResponseHeaderValue($value)
+    private function cookieFromResponseHeaderValue($value): Cookie
     {
         $cookieParts = preg_split('/;\s?/', $value);
         $cookieMap = array();
         foreach ($cookieParts as $part) {
             preg_match('/(\w+)(?:=(.*)|)/', $part, $capture);
             $name = $capture[1];
-            $value = isset($capture[2]) ? $capture[2] : '';
+            $value = $capture[2] ?? '';
 
             $cookieMap[$name] = $value;
         }
@@ -175,12 +175,12 @@ class FcgiHttpKernel implements HttpKernelInterface
         );
     }
 
-    private function getUrlEncodedParameterBag(ParameterBag $bag)
+    private function getUrlEncodedParameterBag(ParameterBag $bag): string
     {
         return http_build_query($bag->all());
     }
 
-    private function encodeMultipartFiles($boundary, FileBag $files)
+    private function encodeMultipartFiles($boundary, FileBag $files): string
     {
         $mimeBoundary = '--'.$boundary."\r\n";
 
@@ -195,7 +195,7 @@ class FcgiHttpKernel implements HttpKernelInterface
         return $data;
     }
 
-    private function encodeMultipartFile($name, UploadedFile $file)
+    private function encodeMultipartFile($name, UploadedFile $file): string
     {
         $eol = "\r\n";
 
@@ -213,7 +213,7 @@ class FcgiHttpKernel implements HttpKernelInterface
         return $data;
     }
 
-    private function getMimeBoundary()
+    private function getMimeBoundary(): string
     {
         return md5('cgi-http-kernel');
     }
